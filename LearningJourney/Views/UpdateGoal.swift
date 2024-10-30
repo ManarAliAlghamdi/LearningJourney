@@ -55,7 +55,7 @@ struct UpdateLearningGoal: View {
                     
                     // Text field to input the skill/goal
                     ZStack(alignment: .bottom) {
-                        TextField("", text: $viewModel.skillValue)
+                        TextField(viewModel.skillValue, text: $viewModel.skill)
                             .smallGrayText()
                             .accentColor(myColors.AppOrange) // Orange accent for cursor
                             .padding(.horizontal, 10)

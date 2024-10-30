@@ -16,6 +16,7 @@ extension UpdateLearningGoal {
         var tracker: Journey = Journey(period: "Week")
         
         // Skill value is stored and retrieved from UserDefaults, maintaining persistence
+        var skill :String = ""
         var skillValue: String {
             get {
                 UserDefaults.standard.string(forKey: "skill") ?? ""
@@ -39,6 +40,7 @@ extension UpdateLearningGoal {
             // Insert the tracker into the model context
             modelContext.insert(tracker)
             
+            skillValue = skill
             // Save changes if there are unsaved modifications
             if modelContext.hasChanges {
                 tracker.tracker[0].dayDate = .now // Set today's date for the start of the journey
@@ -55,6 +57,7 @@ extension UpdateLearningGoal {
 
         // Initializer for setting up the ViewModel with a model context
         init(modelContext: ModelContext) {
+            
             self.modelContext = modelContext
         }
     }
