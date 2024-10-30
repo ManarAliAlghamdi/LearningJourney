@@ -20,7 +20,6 @@ class JourneyTracker {
         self.dayStatus = dayStatus
     }
     
-    // Make this a static method
     static func populateJourneyTrackers() -> [JourneyTracker] {
         var trackers: [JourneyTracker] = []
         let today = Date()

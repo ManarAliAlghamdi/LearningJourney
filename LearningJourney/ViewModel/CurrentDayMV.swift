@@ -1,20 +1,21 @@
-
-
 import SwiftData
 import SwiftUI
 
 extension CurrentDay {
     @Observable
-    class ViewModel{
-        var modelContext: ModelContext
-        var journeys = [Journey]()
-        var streak: Int = 0
-        var freeze: Int = 0
+    class ViewModel {
+        var modelContext: ModelContext // Model context for managing data persistence
+        var journeys = [Journey]() // Array to store all journey records
+        
+        // Returns the most recent journey based on start date
         var lastTracker: Journey? {
             return journeys.sorted { $0.startDate < $1.startDate }.last
         }
         
+        // List of status messages for day statuses
         let statusList: [String] = ["Log today\nas Learned", "Day \nFreezed", "Learned \nToday"]
+        
+        // Retrieves the user's skill value from UserDefaults, providing a default if unset
         var skillValue: String {
             get {
                 UserDefaults.standard.string(forKey: "skill") ?? ""
@@ -24,60 +25,18 @@ extension CurrentDay {
             }
         }
         
+        // Fetches the most recent journey entry from the database
         func fetchData() {
             do {
                 let descriptor = FetchDescriptor<Journey>(sortBy: [.init(\.startDate, order: .reverse)])
                 let allJourneys = try modelContext.fetch(descriptor)
-                journeys = allJourneys.prefix(1).map { $0 }  // Keep only the latest journey
+                journeys = allJourneys.prefix(1).map { $0 } // Keep only the latest journey
             } catch {
                 print("Fetch failed HERE")
             }
         }
 
-        func updateStreakAndFreeze() {
-            if let tracker = lastTracker {
-                let result = calculateStreakAndFreeze(for: tracker)
-                streak = result.streak
-                freeze = result.freeze
-            }
-        }
-        
-        
-        func calculateStreakAndFreeze(for journey: Journey) -> (streak: Int, freeze: Int) {
-            var streak = 0
-            var freeze = 0
-            let today = Calendar.current.startOfDay(for: Date())
-            
-            for tracker in journey.tracker {
-                let trackerDate = Calendar.current.startOfDay(for: tracker.dayDate)
-                
-                if Calendar.current.isDate(trackerDate, inSameDayAs: today) {
-                    if tracker.dayStatus == 1 {
-                        freeze += 1
-                    } else if tracker.dayStatus == 2 {
-                        streak += 1
-                    }
-                    continue
-                }
-                
-                switch tracker.dayStatus {
-                case 1:
-                    freeze += 1
-                case 2:
-                    streak += 1
-                case 0:
-                    streak = 0
-                default:
-                    break
-                }
-            }
-            
-            return (streak, freeze)
-        }
-        
-        
-        
-        
+        // Formats and returns the current day in "EEEE, dd MMM" format
         func getCurrentDay() -> String {
             let date = Date()
             let formatter = DateFormatter()
@@ -85,21 +44,13 @@ extension CurrentDay {
             return formatter.string(from: date)
         }
         
-        
+        // Updates the status of the specified day, adding it to the tracker if not already present
         func updateCurrentDayStatus(on date: Date, status: Int, context: ModelContext) {
             guard let journey = lastTracker else { return }
             
             let dayStart = Calendar.current.startOfDay(for: date)
             if let index = journey.tracker.firstIndex(where: { Calendar.current.isDate($0.dayDate, inSameDayAs: dayStart) }) {
                 journey.tracker[index].dayStatus = status
-                if (status == 1){
-                    journey.freezeDays += 1
-                    journey.streakDays -= 1
-                }
-                if (status == 2){
-                    journey.freezeDays -= 1
-                    journey.streakDays += 1
-                }
             } else {
                 let newTracker = JourneyTracker(dayDate: dayStart, dayStatus: status)
                 journey.tracker.append(newTracker)
@@ -108,17 +59,13 @@ extension CurrentDay {
             do {
                 try context.save()
                 print("Day status updated and saved successfully.")
-                // Update streak and freeze values after saving the update
-                updateStreakAndFreeze()
+                lastTracker!.calculateStreakAndFreeze(context: modelContext, lastTracker: lastTracker!)
             } catch {
                 print("Failed to save the context: \(error.localizedDescription)")
             }
         }
         
-        
-        
-        
-        
+        // Creates a button for logging the day as learned, conditionally styled based on day status
         func learnedButtonView(lastDay: JourneyTracker, viewModel: ViewModel) -> some View {
             Button(action: {
                 if lastDay.dayStatus != 1 {
@@ -139,7 +86,7 @@ extension CurrentDay {
             .padding(.top)
         }
         
-        // Function to handle the "Freeze day" button and freeze status text
+        // Creates a button and text for freezing a day, showing remaining freeze days
         func freezeDayView(lastDay: JourneyTracker, tracker: Journey, viewModel: ViewModel) -> some View {
             VStack {
                 Button(action: {
@@ -152,7 +99,7 @@ extension CurrentDay {
                 .if(lastDay.dayStatus == 0 && tracker.freezeDays < tracker.freezeLeft) { view in
                     view.freezeingButton()
                 }
-                .if(lastDay.dayStatus != 0 || tracker.freezeDays > tracker.freezeLeft) { view in
+                .if(lastDay.dayStatus == 0 || tracker.freezeDays > tracker.freezeLeft || lastDay.dayStatus != 0 ) { view in
                     view.frezzedButton()
                 }
                 .padding(.vertical)
@@ -162,79 +109,78 @@ extension CurrentDay {
             }
         }
         
-        // Function for when there is no tracker data
+        // Provides a view when no tracker data is available
         func noTrackerDataView() -> some View {
             Text("No tracker data available")
                 .soSmallCenterGrayText()
                 .padding(.top)
         }
         
-        
-        
+        // Combines the learned and freeze day views, or shows a "no data" view if no tracker exists
         func contentForCurrentDay() -> some View {
-                if let tracker = lastTracker, let lastDay = tracker.tracker.last {
-                    return AnyView(
-                        VStack {
-                            learnedButtonView(lastDay: lastDay, viewModel: self)
-                            freezeDayView(lastDay: lastDay, tracker: tracker, viewModel: self)
-                        }
-                    )
-                } else {
-                    return AnyView(noTrackerDataView())
-                }
-            }
-        
-        
-        
-        
-        
-        func newDay() {
-            let today = Calendar.current.startOfDay(for: Date())
-
-            // Safely unwrap `lastTracker`
-            if let currentTracker = lastTracker {
-                // Check if today's date is already in the tracker array
-                if currentTracker.tracker.contains(where: { Calendar.current.isDate($0.dayDate, inSameDayAs: today) }) {
-                    print("Already inserted")
-                } else {
-                    // Insert new JourneyTracker with today's date and default status
-                    let newTracker = JourneyTracker(dayDate: today, dayStatus: 0)
-                    currentTracker.tracker.append(newTracker)
-                    
-                    do {
-                        try modelContext.save()
-                        print("Inserted today's date into the database")
-                    } catch {
-                        print("Failed to insert date: \(error.localizedDescription)")
+            if let tracker = lastTracker, let lastDay = tracker.tracker.last {
+                return AnyView(
+                    VStack {
+                        learnedButtonView(lastDay: lastDay, viewModel: self)
+                        freezeDayView(lastDay: lastDay, tracker: tracker, viewModel: self)
                     }
-                }
+                )
             } else {
-                print("No active journey found in `lastTracker`")
+                return AnyView(noTrackerDataView())
             }
         }
 
-
+        // Populates missing days from the journey's start date to today with status 0
+        func populateMissingDays() {
+            guard let journey = lastTracker else { return }
+            
+            let today = Calendar.current.startOfDay(for: Date())
+            var date = Calendar.current.startOfDay(for: journey.startDate)
+            
+            while date <= today {
+                if !journey.tracker.contains(where: { Calendar.current.isDate($0.dayDate, inSameDayAs: date) }) {
+                    let newTracker = JourneyTracker(dayDate: date, dayStatus: 0)
+                    journey.tracker.append(newTracker)
+                }
+                date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+            }
+            
+            do {
+                try modelContext.save()
+                print("Missing days populated successfully.")
+            } catch {
+                print("Failed to populate missing days: \(error.localizedDescription)")
+            }
+        }
         
+        // Retrieves the current streak count
         func getStreak() -> Int {
             if let currentTracker = lastTracker {
                 return currentTracker.streakDays
             }
             return 0
         }
-
         
-        func getFreeze() -> Int{
+        // Retrieves the current freeze day count
+        func getFreeze() -> Int {
             if let currentTracker = lastTracker {
                 return currentTracker.freezeDays
             }
             return 0
         }
-
         
+        // Initializes the ViewModel with a model context, fetching data and populating missing days
         init(modelContext: ModelContext) {
             self.modelContext = modelContext
             fetchData()
-            newDay()
+            populateMissingDays()
+            
+            // Ensures streak and freeze values are updated if lastTracker exists
+            if let tracker = lastTracker {
+                tracker.calculateStreakAndFreeze(context: modelContext, lastTracker: tracker)
+            } else {
+                print("No journeys found.")
+            }
         }
     }
 }
