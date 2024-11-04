@@ -1,15 +1,12 @@
 # LearningJourney
-LearningJourney is a SwiftUI app designed to help users track their learning progress, manage goals, and visualize their journey over time. The app includes features like streak tracking, freeze days, a personalized calendar, and an onboarding experience to guide users in setting up their goals. It follows the MVVM architecture, integrates SwiftData for data persistence, and SwiftDate for flexible date manipulation.
+LearningJourney is a SwiftUI app designed to help users track their learning progress, manage goals, and visualize their journey over time. The app includes features like streak tracking, freeze days, and an onboarding experience to guide users in setting up their goals. It follows the MVVM architecture, integrates SwiftData for data persistence, and SwiftDate for flexible date manipulation.
 
 ## Features
 
-- **Daily Progress Tracking:** Track and update your learning progress daily using the `CurrentDayDefault` view.
-- **Goal Management:** Set daily learning goals and receive visual feedback as you progress through each quarter of your goal.
+- **Daily Progress Tracking:** Track and update your learning progress daily using the `CurrentDay` view.
 - **Streak Tracking:** Keep track of consecutive learning days, with an automatic reset if a day is missed.
 - **Freeze Days:** Pause your streak when needed with freeze days, which prevent streak loss without breaking continuity.
-- **Flexible Date Handling:** Easily manage durations (week, month, year) with SwiftDate to calculate end dates based on start date and selected duration.
 - **Onboarding Experience:** A user-friendly onboarding process, designed in the `Onboarding.swift` file, to get users started with their learning goals.
-- **Custom Calendar View:** A calendar view with color-coded days based on the learning status: `AppOrange` for completed, `AppBlue` for active, and `pink` for inactive days.
 - **Data Persistence with SwiftData:** All data, including daily goals, progress, streaks, and freeze days, are stored securely for seamless app experiences.
 
 ## Getting Started
