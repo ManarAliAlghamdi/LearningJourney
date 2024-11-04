@@ -1,5 +1,9 @@
 # LearningJourney
-LearningJourney is a SwiftUI app designed to help users track their learning progress, manage goals, and visualize their journey over time. The app includes features like streak tracking, freeze days, and an onboarding experience to guide users in setting up their goals. It follows the MVVM architecture, integrates SwiftData for data persistence, and SwiftDate for flexible date manipulation.
+LearningJourney is a SwiftUI app designed to help users track their learning progress, manage goals, 
+
+
+
+and visualize their journey over time. The app includes features like streak tracking, freeze days, and an onboarding experience to guide users in setting up their goals. It follows the MVVM architecture, integrates SwiftData for data persistence, and SwiftDate for flexible date manipulation.
 
 ## Features
 
