@@ -1,5 +1,6 @@
 # LearningJourney
-LearningJourney is a SwiftUI app designed to help users track their learning progress, manage goals, and visualize their journey over time. The app includes features like streak tracking, freeze days, and an onboarding experience to guide users in setting up their goals. It follows the MVVM architecture, integrates SwiftData for data persistence, and SwiftDate for flexible date manipulation.
+
+**LearningJourney** is a SwiftUI app designed to help users track their learning progress, manage goals, and visualize their journey over time. The app includes features like streak tracking, freeze days, and an onboarding experience to guide users in setting up their goals. It follows the MVVM architecture, integrates SwiftData for data persistence, and SwiftDate for flexible date manipulation.
 
 ## Features
 
@@ -59,15 +60,14 @@ The app offers several customization options:
 
 ## Views Images
 
-
-
 <img width="180" alt="onBordingView" src="https://github.com/user-attachments/assets/6c3c7807-ec1c-4513-ba70-617980bbc36a">
 <img width="180" alt="onProgresView" src="https://github.com/user-attachments/assets/84bcae03-6f2b-4733-924a-a3c8c5248695">
 <img width="180" alt="FreezedDayView" src="https://github.com/user-attachments/assets/3912f863-f599-49b2-bac3-d0753f5681ef">
 <img width="180" alt="loggedView" src="https://github.com/user-attachments/assets/85075b00-49c1-480e-a246-1a032b1b0355">
 <img width="180" alt="updateView" src="https://github.com/user-attachments/assets/e4b56155-3173-482e-9678-f2f4e2348068">
 
+---
 
+## Contact
 
-
-
+You can reach me at my personal email: [manar.a.gh@hotmail.com](mailto:manar.a.gh@hotmail.com) or connect with me on LinkedIn: [linkedin.com/in/manaralghamdi07](https://www.linkedin.com/in/manaralghamdi07)
