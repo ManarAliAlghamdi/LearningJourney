@@ -57,6 +57,19 @@ The app offers several customization options:
 - **Button Styles**: Customize button sizes, colors, and shapes using the `selectedButton` and `unselectedButton` styles or the `freezeView`, `learnedView`, and `logView` configurations.
 - **Icons**: Modify or add icons in the progress tracking section based on personal preference.
 
-## Contributing
+## Views Images
+<img width="480" alt="onBordingView" src="https://github.com/user-attachments/assets/5c7ab94a-41de-45b6-9b25-567962878179">
 
-Feel free to submit issues or pull requests. Contributions are welcome!
+![onProgresView](https://github.com/user-attachments/assets/84bcae03-6f2b-4733-924a-a3c8c5248695)
+
+![freezedDayView](https://github.com/user-attachments/assets/3912f863-f599-49b2-bac3-d0753f5681ef)
+
+![loggedView](https://github.com/user-attachments/assets/85075b00-49c1-480e-a246-1a032b1b0355)
+
+
+<img width="365" alt="updateView" src="https://github.com/user-attachments/assets/e4b56155-3173-482e-9678-f2f4e2348068">
+
+
+
+
+
