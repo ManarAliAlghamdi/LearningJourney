@@ -23,7 +23,7 @@ class JourneyTracker {
     static func populateJourneyTrackers() -> [JourneyTracker] {
         var trackers: [JourneyTracker] = []
         let today = Date()
-        for i in 1...6 { // Start from 1 to skip the current day
+        for i in 1...6 { 
             let pastDate = today - i.days
             let status = Int.random(in: 1...2)
             let tracker = JourneyTracker(dayDate: pastDate, dayStatus: status)
