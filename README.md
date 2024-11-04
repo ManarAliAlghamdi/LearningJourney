@@ -58,9 +58,13 @@ The app offers several customization options:
 - **Icons**: Modify or add icons in the progress tracking section based on personal preference.
 
 ## Views Images
-<img width="365" alt="onBordingView" src="https://github.com/user-attachments/assets/5c7ab94a-41de-45b6-9b25-567962878179">
+
+![onBordingView](https://github.com/user-attachments/assets/6c3c7807-ec1c-4513-ba70-617980bbc36a)
+
+
+<img width="365" alt="onBordingView" src="https://github.com/user-attachments/assets/6c3c7807-ec1c-4513-ba70-617980bbc36a">
 <img width="365" alt="onProgresView" src="https://github.com/user-attachments/assets/84bcae03-6f2b-4733-924a-a3c8c5248695">
-<img width="365" alt="https://github.com/user-attachments/assets/3912f863-f599-49b2-bac3-d0753f5681ef">
+<img width="365" alt="FreezedDayView" src="https://github.com/user-attachments/assets/3912f863-f599-49b2-bac3-d0753f5681ef">
 <img width="365" alt="loggedView" src="https://github.com/user-attachments/assets/85075b00-49c1-480e-a246-1a032b1b0355">
 <img width="365" alt="updateView" src="https://github.com/user-attachments/assets/e4b56155-3173-482e-9678-f2f4e2348068">
 
